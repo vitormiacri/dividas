@@ -65,18 +65,21 @@ describe('RemoteLoadDebtList', () => {
 
     expect(debtList).toEqual([
       {
+        _id: httpResult[0]._id,
         idUsuario: httpResult[0].idUsuario,
         motivo: httpResult[0].motivo,
         valor: httpResult[0].valor,
         data: new Date(httpResult[0].data),
       },
       {
+        _id: httpResult[1]._id,
         idUsuario: httpResult[1].idUsuario,
         motivo: httpResult[1].motivo,
         valor: httpResult[1].valor,
         data: new Date(httpResult[1].data),
       },
       {
+        _id: httpResult[2]._id,
         idUsuario: httpResult[2].idUsuario,
         motivo: httpResult[2].motivo,
         valor: httpResult[2].valor,

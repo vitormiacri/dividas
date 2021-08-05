@@ -1,0 +1,70 @@
+@import '../../styles/colors.scss';
+
+.debtList {
+  width: 100%;
+  max-width: 1024px;
+  margin: 0 auto;
+  padding: 2rem;
+  overflow-y: auto;
+  height: 100vh;
+
+  .header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+
+    h1 {
+      font-size: 2rem;
+    }
+
+    button {
+      width: 80px;
+    }
+
+    @media screen and (min-width: 768px) {
+      padding: 2.5rem;
+      button {
+        width: 200px;
+      }
+    }
+  }
+
+  .card {
+    background-color: $white;
+    border-radius: 8px;
+
+    box-shadow: 0px 1px 3px -1px rgba(0, 0, 0, 0.5);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid #eee;
+
+    thead {
+      th {
+        font-size: 1.4rem;
+        padding: 0.8rem;
+      }
+    }
+
+    tbody {
+      tr {
+        &:nth-of-type(odd) {
+          background-color: #eee;
+        }
+
+        td {
+          text-align: center;
+          padding: 0.8rem;
+          word-wrap: break-word;
+        }
+
+        &:hover {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}
