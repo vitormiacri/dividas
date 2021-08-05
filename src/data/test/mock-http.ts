@@ -1,3 +1,4 @@
+import faker from 'faker';
 import {
   HttpClient,
   HttpRequest,
@@ -20,3 +21,10 @@ export class HttpClientSpy<R = any> implements HttpClient<R> {
     return this.response;
   }
 }
+
+export const mockHttpRequest = (): HttpRequest => ({
+  url: faker.internet.url(),
+  method: faker.random.arrayElement(['get', 'post', 'put', 'delete']),
+  body: faker.random.objectElement(),
+  params: 'f8fc3eeb-d0e7-4462-9c62-408a4435bd8e',
+});
