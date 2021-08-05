@@ -42,6 +42,17 @@ describe('RemoteLoadDebtList', () => {
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 
+  test('Should throw UnexpectedError if HttpClient returns 500', async () => {
+    const { sut, httpClientSpy } = makeSut();
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError,
+    };
+
+    const promise = sut.loadAll();
+
+    await expect(promise).rejects.toThrow(new UnexpectedError());
+  });
+
   test('Should return a list of DebtModels if HttpClient returns 200', async () => {
     const { sut, httpClientSpy } = makeSut();
     const httpResult = mockRemoteDebtListModel();
