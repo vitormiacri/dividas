@@ -1,5 +1,6 @@
 import { LoadDebtList } from '@/domain/usecases';
 import { DebtModel } from '@/domain/models';
+import { UnexpectedError } from '@/domain/erros/unexpected-error';
 import { RemoteDebtModel } from '@/data/models/remote-debt-model';
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http';
 
@@ -22,9 +23,9 @@ export class RemoteLoadDebtList implements LoadDebtList {
           data: new Date(remoteDebt.data),
         }));
       case HttpStatusCode.badRequest:
-        return [];
+        throw new UnexpectedError();
       default:
-        throw new Error();
+        throw new UnexpectedError();
     }
   }
 }
