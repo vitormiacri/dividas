@@ -25,9 +25,17 @@ const makeSut = (loadDebtListSpy = new LoadDebtListSpy()): SutTypes => {
 };
 
 describe('DebtList', () => {
-  test('Should render DebtItems on success', async () => {
+  test('Should call LoadSurveyList', async () => {
     const { loadDebtListSpy } = makeSut();
     expect(loadDebtListSpy.callsCount).toBe(1);
     await waitFor(() => screen.getByRole('heading'));
+  });
+
+  test('Should render DebtItems on success', async () => {
+    makeSut();
+    const debtList = screen.getByTestId('debt-list');
+    await waitFor(() => debtList);
+
+    expect(debtList.querySelectorAll('tr')).toHaveLength(3);
   });
 });
