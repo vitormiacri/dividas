@@ -1,6 +1,7 @@
 import { DebtModel } from '@/domain/models';
 import { LoadDebtList } from '@/domain/usecases';
 import React, { useEffect, useState } from 'react';
+import { DebListItem } from './components';
 
 import Styles from './debt-list-styles.scss';
 
@@ -32,32 +33,7 @@ const DebtList: React.FC<Props> = ({ loadDebtList }) => {
           <h1>Dívidas</h1>
           <button>Novo</button>
         </div>
-        <table>
-          <thead>
-            <tr>
-              <th>Cliente</th>
-              <th>Motivo</th>
-              <th>Valor</th>
-              <th>Data</th>
-            </tr>
-          </thead>
-          <tbody data-testid="debt-list">
-            {state.debts.length > 0 ? (
-              state.debts.map((debt) => (
-                <tr key={debt.idUsuario}>
-                  <td>{debt.idUsuario}</td>
-                  <td>{debt.motivo}</td>
-                  <td>{debt.valor}</td>
-                  <td>{debt.data.toLocaleDateString('pt-br')}</td>
-                </tr>
-              ))
-            ) : (
-              <tr>
-                <td>Vazio</td>
-              </tr>
-            )}
-          </tbody>
-        </table>
+        <DebListItem debtList={state.debts} />
       </div>
     </div>
   );
