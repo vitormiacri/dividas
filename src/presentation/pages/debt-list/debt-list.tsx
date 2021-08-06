@@ -1,9 +1,10 @@
+import React, { useCallback, useEffect, useState } from 'react';
+
 import { DebtModel } from '@/domain/models';
 import { LoadDebtList } from '@/domain/usecases';
-import React, { useEffect, useState } from 'react';
 import { DebListItem } from './components';
-
 import Styles from './debt-list-styles.scss';
+import { useHistory } from 'react-router-dom';
 
 type State = {
   debts: DebtModel[];
@@ -13,9 +14,14 @@ type Props = {
   loadDebtList: LoadDebtList;
 };
 const DebtList: React.FC<Props> = ({ loadDebtList }) => {
+  const history = useHistory();
   const [state, setState] = useState<State>({
     debts: [],
   });
+
+  const handleAddClick = useCallback(() => {
+    history.push('/add-debt');
+  }, []);
 
   useEffect(() => {
     loadDebtList.loadAll().then((debts) => {
@@ -31,7 +37,9 @@ const DebtList: React.FC<Props> = ({ loadDebtList }) => {
       <div className={Styles.card}>
         <div className={Styles.header}>
           <h1>Dívidas</h1>
-          <button>Novo</button>
+          <button type="button" onClick={handleAddClick} data-testid="addDebt">
+            Novo
+          </button>
         </div>
         <DebListItem debtList={state.debts} />
       </div>
