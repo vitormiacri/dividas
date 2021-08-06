@@ -3,7 +3,12 @@ import { renderWithHistory } from '@/presentation/test/render-helper';
 import DebtList from './debt-list';
 
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { waitFor, screen, RenderResult } from '@testing-library/react';
+import {
+  waitFor,
+  screen,
+  RenderResult,
+  fireEvent,
+} from '@testing-library/react';
 
 type SutTypes = {
   history: MemoryHistory;
@@ -37,5 +42,13 @@ describe('DebtList', () => {
     await waitFor(() => debtList);
 
     expect(debtList.querySelectorAll('tr')).toHaveLength(3);
+  });
+
+  test('Should go to add new Debt page', async () => {
+    const { sut, history } = makeSut();
+    const addDebt = sut.getByTestId('addDebt');
+    fireEvent.click(addDebt);
+    expect(history.location.pathname).toBe('/add-debt');
+    await waitFor(() => screen.getByRole('heading'));
   });
 });
