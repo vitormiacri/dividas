@@ -2,7 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { DebtModel } from '@/domain/models';
 import { LoadDebtList } from '@/domain/usecases';
-import { DebListItem } from './components';
+import { DebListItem, EmptyList } from './components';
 import Styles from './debt-list-styles.scss';
 import { useHistory } from 'react-router-dom';
 
@@ -41,7 +41,11 @@ const DebtList: React.FC<Props> = ({ loadDebtList }) => {
             Novo
           </button>
         </div>
-        <DebListItem debtList={state.debts} />
+        {state.debts.length ? (
+          <DebListItem debtList={state.debts} />
+        ) : (
+          <EmptyList />
+        )}
       </div>
     </div>
   );

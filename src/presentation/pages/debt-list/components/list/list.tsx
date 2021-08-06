@@ -1,12 +1,19 @@
 import { DebtModel } from '@/domain/models';
 import Styles from './list-styles.scss';
-import React from 'react';
+import React, { useCallback } from 'react';
+import { useHistory } from 'react-router-dom';
 
 type Props = {
   debtList: DebtModel[];
 };
 
 const List: React.FC<Props> = ({ debtList }) => {
+  const history = useHistory();
+
+  const handleEditDebt = useCallback((id: string) => {
+    history.push(`/debt/${id}`);
+  }, []);
+
   return (
     <table className={Styles.table}>
       <thead>
@@ -19,7 +26,11 @@ const List: React.FC<Props> = ({ debtList }) => {
       </thead>
       <tbody data-testid="debt-list">
         {debtList.map((debt) => (
-          <tr key={debt.idUsuario}>
+          <tr
+            key={debt._id}
+            onClick={() => handleEditDebt(debt._id)}
+            data-testid="debtItem"
+          >
             <td>{debt.idUsuario}</td>
             <td>{debt.motivo}</td>
             <td>{debt.valor}</td>
