@@ -68,22 +68,25 @@ describe('RemoteLoadDebtList', () => {
         _id: httpResult[0]._id,
         idUsuario: httpResult[0].idUsuario,
         motivo: httpResult[0].motivo,
+        nome: httpResult[0].nome,
         valor: httpResult[0].valor,
-        data: new Date(httpResult[0].data),
+        criado: new Date(httpResult[0].criado),
       },
       {
         _id: httpResult[1]._id,
         idUsuario: httpResult[1].idUsuario,
         motivo: httpResult[1].motivo,
+        nome: httpResult[1].nome,
         valor: httpResult[1].valor,
-        data: new Date(httpResult[1].data),
+        criado: new Date(httpResult[1].criado),
       },
       {
         _id: httpResult[2]._id,
         idUsuario: httpResult[2].idUsuario,
         motivo: httpResult[2].motivo,
+        nome: httpResult[2].nome,
         valor: httpResult[2].valor,
-        data: new Date(httpResult[2].data),
+        criado: new Date(httpResult[2].criado),
       },
     ]);
   });

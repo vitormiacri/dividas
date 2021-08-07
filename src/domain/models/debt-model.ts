@@ -1,7 +1,8 @@
 export type DebtModel = {
   _id: string;
   idUsuario: number;
+  nome: string;
   motivo: string;
   valor: number;
-  data: Date;
+  criado: Date;
 };

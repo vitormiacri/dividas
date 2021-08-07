@@ -20,7 +20,7 @@ export class RemoteLoadDebtList implements LoadDebtList {
       case HttpStatusCode.ok:
         return remoteDebts.map((remoteDebt) => ({
           ...remoteDebt,
-          data: new Date(remoteDebt.data),
+          criado: new Date(remoteDebt.criado),
         }));
       case HttpStatusCode.badRequest:
         throw new UnexpectedError();

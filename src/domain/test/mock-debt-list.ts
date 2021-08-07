@@ -5,9 +5,10 @@ import { LoadDebtList } from '../usecases';
 export const mockDebtModel = (): DebtModel => ({
   _id: faker.datatype.uuid(),
   idUsuario: faker.datatype.number(),
+  nome: faker.internet.userName(),
   motivo: faker.random.words(),
   valor: faker.datatype.number(),
-  data: faker.date.recent(),
+  criado: faker.date.recent(),
 });
 
 export const mockDebtListModel = (): DebtModel[] => [
