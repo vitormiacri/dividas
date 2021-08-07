@@ -7,5 +7,5 @@ export type SaveDebtParams = {
 };
 
 export interface SaveDebt {
-  save(params: SaveDebtParams, method: HttpMethod): Promise<string>;
+  save(params: SaveDebtParams, method: HttpMethod): Promise<boolean>;
 }
