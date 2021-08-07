@@ -9,7 +9,7 @@
     "test": "jest --passWithNoTests --no-cache --runInBand",
     "test:watch": "yarn test -- --watch",
     "test:staged": "yarn test -- --findRelatedTests",
-    "test:ci": "yarn test -- --coverage"
+    "test:coverage": "yarn test -- --coverage"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.14.1",
