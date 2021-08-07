@@ -1,1 +1,1 @@
-export * from './remote-load-debt-list';
+export * from './load-debt-list/remote-load-debt-list';
