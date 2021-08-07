@@ -24,6 +24,8 @@ export class RemoteLoadDebt implements LoadDebt {
         };
       case HttpStatusCode.serverError:
         throw new UnexpectedError();
+      case HttpStatusCode.badRequest:
+        throw new UnexpectedError();
     }
   }
 }
