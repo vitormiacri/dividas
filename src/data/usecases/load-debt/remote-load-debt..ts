@@ -1,15 +1,26 @@
-import { HttpClient } from '@/data/protocols/http';
+import { RemoteDebtModel } from '@/data/models';
+import { HttpClient, HttpStatusCode } from '@/data/protocols/http';
+import { DebtModel } from '@/domain/models';
+import { LoadDebt } from '@/domain/usecases/load-debt';
 
-export class RemoteLoadDebt {
+export class RemoteLoadDebt implements LoadDebt {
   constructor(
     private readonly url: string,
-    private readonly httpClient: HttpClient
+    private readonly httpClient: HttpClient<RemoteDebtModel>
   ) {}
 
-  async load(): Promise<void> {
-    await this.httpClient.request({
+  async load(): Promise<DebtModel> {
+    const httpResponse = await this.httpClient.request({
       url: this.url,
       method: 'get',
     });
+    const remoteDebt = httpResponse.body;
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok:
+        return {
+          ...remoteDebt,
+          criado: new Date(remoteDebt.criado),
+        };
+    }
   }
 }
