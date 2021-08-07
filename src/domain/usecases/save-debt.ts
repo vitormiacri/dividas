@@ -1,3 +1,5 @@
+import { HttpMethod } from '@/data/protocols/http';
+
 export type SaveDebtParams = {
   idUsuario: number;
   motivo: string;
@@ -5,5 +7,5 @@ export type SaveDebtParams = {
 };
 
 export interface SaveDebt {
-  save(params: SaveDebtParams): Promise<string>;
+  save(params: SaveDebtParams, method: HttpMethod): Promise<string>;
 }
