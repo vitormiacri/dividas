@@ -1,13 +1,13 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
-import { DebtList } from '@/presentation/pages';
+import { makeDebtList } from '../factories/pages/debt-list/debt-list-factory';
 
 const Router: React.FC = () => {
   return (
     <BrowserRouter>
       <Switch>
-        <Route path="/" exact component={DebtList} />
+        <Route path="/" exact component={makeDebtList} />
       </Switch>
     </BrowserRouter>
   );
