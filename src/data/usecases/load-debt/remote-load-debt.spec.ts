@@ -58,4 +58,13 @@ describe('RemoteLoadDebt', () => {
     const promise = sut.load();
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
+
+  test('Should throw UnexpectedError if HttpClient returns 400', async () => {
+    const { httpClientSpy, sut } = makeSut();
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest,
+    };
+    const promise = sut.load();
+    await expect(promise).rejects.toThrow(new UnexpectedError());
+  });
 });
