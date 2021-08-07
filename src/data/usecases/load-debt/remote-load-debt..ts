@@ -1,5 +1,6 @@
 import { RemoteDebtModel } from '@/data/models';
 import { HttpClient, HttpStatusCode } from '@/data/protocols/http';
+import { UnexpectedError } from '@/domain/erros/unexpected-error';
 import { DebtModel } from '@/domain/models';
 import { LoadDebt } from '@/domain/usecases/load-debt';
 
@@ -21,6 +22,8 @@ export class RemoteLoadDebt implements LoadDebt {
           ...remoteDebt,
           criado: new Date(remoteDebt.criado),
         };
+      case HttpStatusCode.serverError:
+        throw new UnexpectedError();
     }
   }
 }
