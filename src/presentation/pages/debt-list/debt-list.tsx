@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
-import { DebtModel } from '@/domain/models';
+import { DebtModel, UserModel } from '@/domain/models';
 import { LoadDebtList } from '@/domain/usecases';
 import { DebListItem, EmptyList } from './components';
 import Styles from './debt-list-styles.scss';
@@ -12,8 +12,10 @@ type State = {
 
 type Props = {
   loadDebtList: LoadDebtList;
+  users: UserModel[];
 };
-const DebtList: React.FC<Props> = ({ loadDebtList }) => {
+
+const DebtList: React.FC<Props> = ({ loadDebtList, users }) => {
   const history = useHistory();
   const [state, setState] = useState<State>({
     debts: [],
@@ -38,11 +40,11 @@ const DebtList: React.FC<Props> = ({ loadDebtList }) => {
         <div className={Styles.header}>
           <h1>Dívidas</h1>
           <button type="button" onClick={handleAddClick} data-testid="addDebt">
-            Novo
+            Adicionar
           </button>
         </div>
         {state.debts.length ? (
-          <DebListItem debtList={state.debts} />
+          <DebListItem debtList={state.debts} users={users} />
         ) : (
           <EmptyList />
         )}

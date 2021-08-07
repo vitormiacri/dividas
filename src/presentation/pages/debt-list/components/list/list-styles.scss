@@ -7,23 +7,30 @@
     th {
       font-size: 1.4rem;
       padding: 0.8rem;
+      @media screen and (min-width: 1024px) {
+        font-size: 2.4rem;
+        padding: 1.2rem;
+      }
     }
   }
 
   tbody {
     tr {
-      &:nth-of-type(odd) {
-        background-color: #eee;
-      }
-
+      border-top: solid 1px #eee;
       td {
         text-align: center;
         padding: 0.8rem;
         word-wrap: break-word;
+        @media screen and (min-width: 1024px) {
+          font-size: 1.5rem;
+          text-align: center;
+          padding: 1.5rem 0;
+        }
       }
 
       &:hover {
         cursor: pointer;
+        background-color: #eee;
       }
     }
   }

@@ -1,5 +1,6 @@
 import { LoadDebtListSpy } from '@/domain/test/mock-debt-list';
 import { renderWithHistory } from '@/presentation/test/render-helper';
+import users from '@/users.json';
 import DebtList from './debt-list';
 
 import { createMemoryHistory, MemoryHistory } from 'history';
@@ -20,7 +21,7 @@ const makeSut = (loadDebtListSpy = new LoadDebtListSpy()): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/'] });
   const { sut } = renderWithHistory({
     history,
-    Page: () => DebtList({ loadDebtList: loadDebtListSpy }),
+    Page: () => DebtList({ loadDebtList: loadDebtListSpy, users }),
   });
   return {
     sut,
@@ -32,8 +33,8 @@ const makeSut = (loadDebtListSpy = new LoadDebtListSpy()): SutTypes => {
 describe('DebtList', () => {
   test('Should call LoadSurveyList', async () => {
     const { loadDebtListSpy } = makeSut();
+    await waitFor(() => screen.getByTestId('debt-list'));
     expect(loadDebtListSpy.callsCount).toBe(1);
-    await waitFor(() => screen.getByRole('heading'));
   });
 
   test('Should render DebtItems on success', async () => {

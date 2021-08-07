@@ -1,17 +1,32 @@
-import { DebtModel } from '@/domain/models';
-import Styles from './list-styles.scss';
 import React, { useCallback } from 'react';
 import { useHistory } from 'react-router-dom';
 
+import { DebtModel, UserModel } from '@/domain/models';
+import Styles from './list-styles.scss';
+
 type Props = {
   debtList: DebtModel[];
+  users: UserModel[];
 };
 
-const List: React.FC<Props> = ({ debtList }) => {
+const List: React.FC<Props> = ({ debtList, users }) => {
   const history = useHistory();
 
   const handleEditDebt = useCallback((id: string) => {
     history.push(`/debt/${id}`);
+  }, []);
+
+  const getUserName = useCallback((idUser: number): string => {
+    const findUser = users.find((u) => u.id === idUser);
+    if (findUser) return findUser.name;
+    return '';
+  }, []);
+
+  const formatMoney = useCallback((value: number): string => {
+    return new Intl.NumberFormat('pt-BR', {
+      style: 'currency',
+      currency: 'BRL',
+    }).format(value);
   }, []);
 
   return (
@@ -31,10 +46,10 @@ const List: React.FC<Props> = ({ debtList }) => {
             onClick={() => handleEditDebt(debt._id)}
             data-testid="debtItem"
           >
-            <td>{debt.idUsuario}</td>
+            <td>{getUserName(debt.idUsuario)}</td>
             <td>{debt.motivo}</td>
-            <td>{debt.valor}</td>
-            <td>{debt.data.toLocaleDateString('pt-br')}</td>
+            <td>{formatMoney(debt.valor)}</td>
+            <td>{debt.criado.toLocaleDateString('pt-br')}</td>
           </tr>
         ))}
       </tbody>
