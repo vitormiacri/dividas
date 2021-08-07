@@ -48,6 +48,7 @@ const DebtList: React.FC<Props> = ({ loadDebtList, users }) => {
         ) : (
           <EmptyList />
         )}
+        <div className={Styles.backgroundTop}></div>
       </div>
     </div>
   );
