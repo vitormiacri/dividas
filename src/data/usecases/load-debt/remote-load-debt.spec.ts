@@ -3,6 +3,7 @@ import { HttpClientSpy, mockRemoteDebtModel } from '@/data/test';
 import { RemoteDebtModel } from '@/data/models';
 import { HttpStatusCode } from '@/data/protocols/http';
 import { RemoteLoadDebt } from './remote-load-debt.';
+import { UnexpectedError } from '@/domain/erros/unexpected-error';
 
 type SutTypes = {
   sut: RemoteLoadDebt;
@@ -47,5 +48,14 @@ describe('RemoteLoadDebt', () => {
       valor: httpResult.valor,
       criado: new Date(httpResult.criado),
     });
+  });
+
+  test('Should throw UnexpectedError if HttpClient returns 500', async () => {
+    const { httpClientSpy, sut } = makeSut();
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError,
+    };
+    const promise = sut.load();
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 });
