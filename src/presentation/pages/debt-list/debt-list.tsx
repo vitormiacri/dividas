@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react';
 
 import { DebtModel, UserModel } from '@/domain/models';
 import { LoadDebtList } from '@/domain/usecases';
+import { Card } from '@/presentation/components';
 import { DebListItem, EmptyList } from './components';
 import Styles from './debt-list-styles.scss';
 import { useHistory } from 'react-router-dom';
@@ -36,7 +37,7 @@ const DebtList: React.FC<Props> = ({ loadDebtList, users }) => {
 
   return (
     <div className={Styles.debtList}>
-      <div className={Styles.card}>
+      <Card>
         <div className={Styles.header}>
           <h1>Dívidas</h1>
           <button type="button" onClick={handleAddClick} data-testid="addDebt">
@@ -49,7 +50,7 @@ const DebtList: React.FC<Props> = ({ loadDebtList, users }) => {
           <EmptyList />
         )}
         <div className={Styles.backgroundTop}></div>
-      </div>
+      </Card>
     </div>
   );
 };
