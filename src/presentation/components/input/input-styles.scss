@@ -1,0 +1,26 @@
+@import '../../styles/colors.scss';
+
+.inputWrap {
+  width: 100%;
+  margin: 0.5rem 0;
+
+  @media screen and (min-width: 768px) {
+    flex-basis: 49%;
+  }
+
+  input[type='text'] {
+    width: 100%;
+    border: 1px solid #ccc;
+    line-height: 40px;
+    border-radius: 4px;
+    padding: 0 40px 0 8px;
+
+    &:focus {
+      outline-color: $primaryLight;
+    }
+  }
+
+  .select {
+    max-height: 42px;
+  }
+}
