@@ -1,15 +1,15 @@
-import { LoadDebtListSpy } from '@/domain/test/mock-debt-list';
-import { renderWithHistory } from '@/presentation/test/render-helper';
-import users from '@/users.json';
-import DebtList from './debt-list';
-
-import { createMemoryHistory, MemoryHistory } from 'history';
 import {
   waitFor,
   screen,
   RenderResult,
   fireEvent,
 } from '@testing-library/react';
+import { createMemoryHistory, MemoryHistory } from 'history';
+
+import { LoadDebtListSpy } from '@/domain/test/mock-debt-list';
+import { renderWithHistory } from '@/presentation/test/render-helper';
+import users from '@/users.json';
+import DebtList from './debt-list';
 
 type SutTypes = {
   history: MemoryHistory;
@@ -30,7 +30,7 @@ const makeSut = (loadDebtListSpy = new LoadDebtListSpy()): SutTypes => {
   };
 };
 
-describe('DebtList', () => {
+describe('DebtList Component', () => {
   test('Should call LoadSurveyList', async () => {
     const { loadDebtListSpy } = makeSut();
     await waitFor(() => screen.getByTestId('debt-list'));
