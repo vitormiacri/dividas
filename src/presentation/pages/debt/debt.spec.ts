@@ -103,10 +103,25 @@ describe('Debt Component', () => {
     expect(window.alert).toBeCalledTimes(1);
   });
 
-  test('Should go to Debt List Page with click in back link', async () => {
+  test('Should go to Debt List Page after click in back link', async () => {
     const { history, sut } = makeSut();
     const backLink = sut.getByTestId('goBackLink');
     fireEvent.click(backLink);
+    expect(history.location.pathname).toBe('/');
+  });
+
+  test('Should go to Debt List Page after save Debt', async () => {
+    const { history, sut } = makeSut();
+    const saveParams = mockSaveDebtParams();
+    const motivoInput = sut.getByTestId('motivo') as HTMLInputElement;
+    const valorInput = sut.getByTestId('valor') as HTMLInputElement;
+    const usuario = options[0].label;
+    await populateSelect(sut, usuario);
+    fireEvent.input(motivoInput, { target: { value: saveParams.motivo } });
+    fireEvent.input(valorInput, { target: { value: saveParams.valor } });
+    const form = sut.getByTestId('form');
+    fireEvent.submit(form);
+    await waitFor(() => form);
     expect(history.location.pathname).toBe('/');
   });
 });
