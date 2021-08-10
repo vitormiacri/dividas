@@ -1,23 +1,47 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Link } from 'react-router-dom';
 
 import Context from '@/presentation/contexts/form/form-context';
 import { Card, Input, Select } from '@/presentation/components';
 import Styles from './debt-styles.scss';
+import { SaveDebt } from '@/domain/usecases';
+import { UserModel } from '@/domain/models';
 
-const options = [
-  { value: 1, label: 'Usuário 1' },
-  { value: 2, label: 'Usuário 2' },
-  { value: 3, label: 'Usuário 3' },
-];
+type Props = {
+  saveDebt: SaveDebt;
+  users: UserModel[];
+};
 
-const Debt: React.FC = () => {
+const Debt: React.FC<Props> = ({ saveDebt, users }) => {
   const [state, setState] = useState({
     isLoading: false,
     idUsuario: 0,
     motivo: '',
     valor: '',
+    usersOption: users.map((u) => ({
+      value: u.id,
+      label: u.name,
+    })),
   });
+
+  const handleSubmit = useCallback(
+    async (event: React.FormEvent<HTMLFormElement>) => {
+      try {
+        event.preventDefault();
+        await saveDebt.save(
+          {
+            idUsuario: state.idUsuario,
+            motivo: state.motivo,
+            valor: Number(state.valor),
+          },
+          'post'
+        );
+      } catch (err) {
+        console.log(err);
+      }
+    },
+    [saveDebt, state.idUsuario, state.motivo, state.valor]
+  );
 
   return (
     <div className={Styles.debtContent}>
@@ -30,8 +54,12 @@ const Debt: React.FC = () => {
         </div>
         <div className={Styles.backgroundTop}></div>
         <Context.Provider value={{ state, setState }}>
-          <form className={Styles.form}>
-            <Select options={options} />
+          <form
+            data-testid="form"
+            onSubmit={handleSubmit}
+            className={Styles.form}
+          >
+            <Select options={state.usersOption} />
             <Input type="text" name="motivo" placeholder="Informe o motivo" />
             <Input type="text" name="valor" placeholder="Informe o valor" />
             <button type="submit">Salvar</button>
