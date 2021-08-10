@@ -7,6 +7,7 @@ import {
 } from '@/data/test';
 import { RemoteSaveDebt } from './remote-save-debt';
 import { HttpStatusCode } from '@/data/protocols/http';
+import { UnexpectedError } from '@/domain/erros/unexpected-error';
 
 type SutTypes = {
   sut: RemoteSaveDebt;
@@ -49,5 +50,26 @@ describe('RemoteSaveDebt', () => {
 
     const httpResponse = await sut.save(mockSaveDebtParams(), 'post');
     expect(httpResponse).toBe(response.success);
+  });
+
+  test('Should throw UnexpectedError if HttpClient returns 400', async () => {
+    const { sut, httpClientSpy } = makeSut();
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest,
+    };
+    const promise = sut.save(mockSaveDebtParams(), 'post');
+
+    await expect(promise).rejects.toThrow(new UnexpectedError());
+  });
+
+  test('Should throw UnexpectedError if HttpClient returns 500', async () => {
+    const { sut, httpClientSpy } = makeSut();
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError,
+    };
+
+    const promise = sut.save(mockSaveDebtParams(), 'post');
+
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 });
