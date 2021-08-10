@@ -37,7 +37,7 @@ const Debt: React.FC<Props> = ({ saveDebt, users }) => {
           'post'
         );
       } catch (err) {
-        console.log(err);
+        alert(err.message);
       }
     },
     [saveDebt, state.idUsuario, state.motivo, state.valor]
@@ -47,7 +47,7 @@ const Debt: React.FC<Props> = ({ saveDebt, users }) => {
     <div className={Styles.debtContent}>
       <Card>
         <div className={Styles.header}>
-          <Link to="/" className={Styles.link}>
+          <Link data-testid="goBackLink" to="/" className={Styles.link}>
             Voltar
           </Link>
           <h1>Adicionar Dívida</h1>
@@ -60,8 +60,18 @@ const Debt: React.FC<Props> = ({ saveDebt, users }) => {
             className={Styles.form}
           >
             <Select options={state.usersOption} />
-            <Input type="text" name="motivo" placeholder="Informe o motivo" />
-            <Input type="text" name="valor" placeholder="Informe o valor" />
+            <Input
+              type="text"
+              name="motivo"
+              required
+              placeholder="Informe o motivo"
+            />
+            <Input
+              type="text"
+              name="valor"
+              required
+              placeholder="Informe o valor"
+            />
             <button type="submit">Salvar</button>
           </form>
         </Context.Provider>
