@@ -46,8 +46,23 @@ const populateSelect = async (
   fireEvent.click(sut.getByText(usuario));
 };
 
+const simulateFormSubmit = async (
+  sut: RenderResult,
+  params = mockSaveDebtParams()
+): Promise<void> => {
+  const motivoInput = sut.getByTestId('motivo') as HTMLInputElement;
+  const valorInput = sut.getByTestId('valor') as HTMLInputElement;
+  const usuario = options[0].label;
+  await populateSelect(sut, usuario);
+  fireEvent.input(motivoInput, { target: { value: params.motivo } });
+  fireEvent.input(valorInput, { target: { value: params.valor } });
+  const form = sut.getByTestId('form');
+  fireEvent.submit(form);
+  await waitFor(() => form);
+};
+
 describe('Debt Component', () => {
-  beforeEach(() => cleanup());
+  beforeEach(cleanup);
 
   test('Should start with initial state', () => {
     const { sut } = makeSut();
@@ -59,35 +74,18 @@ describe('Debt Component', () => {
 
   test('Should call SaveDebt with correct values', async () => {
     const { saveDebtSpy, sut } = makeSut();
-    const saveParams = mockSaveDebtParams();
-    const motivoInput = sut.getByTestId('motivo') as HTMLInputElement;
-    const valorInput = sut.getByTestId('valor') as HTMLInputElement;
-    const usuario = options[0].label;
-    await populateSelect(sut, usuario);
-    fireEvent.input(motivoInput, { target: { value: saveParams.motivo } });
-    fireEvent.input(valorInput, { target: { value: saveParams.valor } });
-    const form = sut.getByTestId('form');
-    fireEvent.submit(form);
-    await waitFor(() => form);
+    const params = mockSaveDebtParams();
+    await simulateFormSubmit(sut, params);
     expect(saveDebtSpy.params).toEqual({
       idUsuario: options[0].value,
-      motivo: saveParams.motivo,
-      valor: saveParams.valor,
+      motivo: params.motivo,
+      valor: params.valor,
     });
   });
 
   test('Should call SaveDebt only once', async () => {
     const { saveDebtSpy, sut } = makeSut();
-    const saveParams = mockSaveDebtParams();
-    const motivoInput = sut.getByTestId('motivo') as HTMLInputElement;
-    const valorInput = sut.getByTestId('valor') as HTMLInputElement;
-    const usuario = options[0].label;
-    await populateSelect(sut, usuario);
-    fireEvent.input(motivoInput, { target: { value: saveParams.motivo } });
-    fireEvent.input(valorInput, { target: { value: saveParams.valor } });
-    const form = sut.getByTestId('form');
-    fireEvent.submit(form);
-    await waitFor(() => form);
+    await simulateFormSubmit(sut);
     expect(saveDebtSpy.callsCount).toBe(1);
   });
 
@@ -112,16 +110,7 @@ describe('Debt Component', () => {
 
   test('Should go to Debt List Page after save Debt', async () => {
     const { history, sut } = makeSut();
-    const saveParams = mockSaveDebtParams();
-    const motivoInput = sut.getByTestId('motivo') as HTMLInputElement;
-    const valorInput = sut.getByTestId('valor') as HTMLInputElement;
-    const usuario = options[0].label;
-    await populateSelect(sut, usuario);
-    fireEvent.input(motivoInput, { target: { value: saveParams.motivo } });
-    fireEvent.input(valorInput, { target: { value: saveParams.valor } });
-    const form = sut.getByTestId('form');
-    fireEvent.submit(form);
-    await waitFor(() => form);
+    await simulateFormSubmit(sut);
     expect(history.location.pathname).toBe('/');
   });
 });
