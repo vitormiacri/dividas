@@ -13,6 +13,7 @@ export const mockSaveDebtParams = (): SaveDebtParams => {
 export class SaveDebtSpy implements SaveDebt {
   callsCount = 0;
   params: SaveDebtParams;
+  response: boolean;
 
   async save(params: SaveDebtParams, method: HttpMethod): Promise<boolean> {
     this.callsCount++;

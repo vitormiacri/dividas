@@ -1,10 +1,16 @@
 import { createMemoryHistory, MemoryHistory } from 'history';
 import { SaveDebtSpy } from '@/domain/test/mock-save-debt';
-import { fireEvent, RenderResult, waitFor } from '@testing-library/react';
+import {
+  cleanup,
+  fireEvent,
+  RenderResult,
+  waitFor,
+} from '@testing-library/react';
 import { renderWithHistory } from '@/presentation/test/render-helper';
 import users from '@/users.json';
 import Debt from './debt';
 import { mockSaveDebtParams } from '@/data/test';
+import { UnexpectedError } from '@/domain/erros/unexpected-error';
 
 type SutTypes = {
   sut: RenderResult;
@@ -41,6 +47,8 @@ const populateSelect = async (
 };
 
 describe('Debt Component', () => {
+  beforeEach(() => cleanup());
+
   test('Should start with initial state', () => {
     const { sut } = makeSut();
     const motivo = sut.getByTestId('motivo') as HTMLInputElement;
@@ -66,5 +74,39 @@ describe('Debt Component', () => {
       motivo: saveParams.motivo,
       valor: saveParams.valor,
     });
+  });
+
+  test('Should call SaveDebt only once', async () => {
+    const { saveDebtSpy, sut } = makeSut();
+    const saveParams = mockSaveDebtParams();
+    const motivoInput = sut.getByTestId('motivo') as HTMLInputElement;
+    const valorInput = sut.getByTestId('valor') as HTMLInputElement;
+    const usuario = options[0].label;
+    await populateSelect(sut, usuario);
+    fireEvent.input(motivoInput, { target: { value: saveParams.motivo } });
+    fireEvent.input(valorInput, { target: { value: saveParams.valor } });
+    const form = sut.getByTestId('form');
+    fireEvent.submit(form);
+    await waitFor(() => form);
+    expect(saveDebtSpy.callsCount).toBe(1);
+  });
+
+  test('Should show alert if submit fails', async () => {
+    const saveDebtSpy = new SaveDebtSpy();
+    const error = new UnexpectedError();
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+    jest.spyOn(saveDebtSpy, 'save').mockRejectedValueOnce(error);
+    const { sut } = makeSut(saveDebtSpy);
+    const form = sut.getByTestId('form');
+    fireEvent.submit(form);
+    await waitFor(() => form);
+    expect(window.alert).toBeCalledTimes(1);
+  });
+
+  test('Should go to Debt List Page with click in back link', async () => {
+    const { history, sut } = makeSut();
+    const backLink = sut.getByTestId('goBackLink');
+    fireEvent.click(backLink);
+    expect(history.location.pathname).toBe('/');
   });
 });

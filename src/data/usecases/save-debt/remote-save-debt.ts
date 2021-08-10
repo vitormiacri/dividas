@@ -1,5 +1,6 @@
 import { RemoteSaveDebtModel } from '@/data/models';
 import { HttpClient, HttpMethod, HttpStatusCode } from '@/data/protocols/http';
+import { UnexpectedError } from '@/domain/erros/unexpected-error';
 import { SaveDebt, SaveDebtParams } from '@/domain/usecases';
 
 export class RemoteSaveDebt implements SaveDebt {
@@ -18,6 +19,10 @@ export class RemoteSaveDebt implements SaveDebt {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.ok:
         return remoteSaveDebt.success;
+      case HttpStatusCode.badRequest:
+        throw new UnexpectedError();
+      case HttpStatusCode.serverError:
+        throw new UnexpectedError();
     }
   }
 }
