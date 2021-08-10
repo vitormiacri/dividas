@@ -9,7 +9,7 @@ import {
 import { renderWithHistory } from '@/presentation/test/render-helper';
 import users from '@/users.json';
 import Debt from './debt';
-import { mockSaveDebtParams } from '@/data/test';
+import { mockRemoteSaveDebtParams } from '@/data/test';
 import { UnexpectedError } from '@/domain/erros/unexpected-error';
 
 type SutTypes = {
@@ -48,7 +48,7 @@ const populateSelect = async (
 
 const simulateFormSubmit = async (
   sut: RenderResult,
-  params = mockSaveDebtParams()
+  params = mockRemoteSaveDebtParams()
 ): Promise<void> => {
   const motivoInput = sut.getByTestId('motivo') as HTMLInputElement;
   const valorInput = sut.getByTestId('valor') as HTMLInputElement;
@@ -74,7 +74,7 @@ describe('Debt Component', () => {
 
   test('Should call SaveDebt with correct values', async () => {
     const { saveDebtSpy, sut } = makeSut();
-    const params = mockSaveDebtParams();
+    const params = mockRemoteSaveDebtParams();
     await simulateFormSubmit(sut, params);
     expect(saveDebtSpy.params).toEqual({
       idUsuario: options[0].value,

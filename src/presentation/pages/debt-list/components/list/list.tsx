@@ -12,15 +12,20 @@ type Props = {
 const List: React.FC<Props> = ({ debtList, users }) => {
   const history = useHistory();
 
-  const handleEditDebt = useCallback((id: string) => {
-    history.push(`/debt/${id}`);
-  }, []);
+  const handleEditDebt = useCallback(
+    (id: string) => {
+      history.push(`/debt/${id}`);
+    },
+    [history]
+  );
 
-  const getUserName = useCallback((idUser: number): string => {
-    const findUser = users.find((u) => u.id === idUser);
-    if (findUser) return findUser.name;
-    return '';
-  }, []);
+  const getUserName = useCallback(
+    (idUser: number): string => {
+      const findUser = users.find((u) => u.id === idUser);
+      return findUser ? findUser.name : '';
+    },
+    [users]
+  );
 
   const formatMoney = useCallback((value: number): string => {
     return new Intl.NumberFormat('pt-BR', {
