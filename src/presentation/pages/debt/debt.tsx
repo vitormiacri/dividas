@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import Context from '@/presentation/contexts/form/form-context';
 import { Card, Input, Select } from '@/presentation/components';
@@ -13,6 +13,7 @@ type Props = {
 };
 
 const Debt: React.FC<Props> = ({ saveDebt, users }) => {
+  const history = useHistory();
   const [state, setState] = useState({
     isLoading: false,
     idUsuario: 0,
@@ -36,11 +37,12 @@ const Debt: React.FC<Props> = ({ saveDebt, users }) => {
           },
           'post'
         );
+        history.replace('/');
       } catch (err) {
         alert(err.message);
       }
     },
-    [saveDebt, state.idUsuario, state.motivo, state.valor]
+    [history, saveDebt, state.idUsuario, state.motivo, state.valor]
   );
 
   return (
