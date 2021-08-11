@@ -5,7 +5,12 @@ import {
   RenderResult,
   waitFor,
 } from '@testing-library/react';
-import { LoadDebtSpy, mockSaveDebtParams, SaveDebtSpy } from '@/domain/test';
+import {
+  LoadDebtSpy,
+  mockSaveDebtParams,
+  SaveDebtSpy,
+  DeleteDebtSpy,
+} from '@/domain/test';
 import { renderWithHistory } from '@/presentation/test/render-helper';
 import users from '@/users.json';
 import DebtEdit from './debt-edit';
@@ -15,6 +20,7 @@ type SutTypes = {
   sut: RenderResult;
   saveDebtSpy: SaveDebtSpy;
   loadDebtSpy: LoadDebtSpy;
+  deleteDebtSpy: DeleteDebtSpy;
   history: MemoryHistory;
 };
 
@@ -25,18 +31,25 @@ const options = users.map((u) => ({
 
 const makeSut = (
   saveDebtSpy = new SaveDebtSpy(),
-  loadDebtSpy = new LoadDebtSpy()
+  loadDebtSpy = new LoadDebtSpy(),
+  deleteDebtSpy = new DeleteDebtSpy()
 ): SutTypes => {
   const history = createMemoryHistory({ initialEntries: ['/edit-debt'] });
   const { sut } = renderWithHistory({
     history,
     Page: () =>
-      DebtEdit({ saveDebt: saveDebtSpy, loadDebt: loadDebtSpy, users }),
+      DebtEdit({
+        saveDebt: saveDebtSpy,
+        deleteDebt: deleteDebtSpy,
+        loadDebt: loadDebtSpy,
+        users,
+      }),
   });
   return {
     sut,
     saveDebtSpy,
     loadDebtSpy,
+    deleteDebtSpy,
     history,
   };
 };
@@ -121,5 +134,13 @@ describe('Debt Edit Component', () => {
     fireEvent.submit(form);
     await waitFor(() => form);
     expect(window.alert).toBeCalledTimes(1);
+  });
+
+  test('Should call DeleteDebt after click in delete button', async () => {
+    const { sut, deleteDebtSpy } = makeSut();
+    const deleteButton = sut.getByTestId('deleteDebt');
+    await waitFor(() => deleteButton);
+    fireEvent.click(deleteButton);
+    expect(deleteDebtSpy.callsCount).toBe(1);
   });
 });
