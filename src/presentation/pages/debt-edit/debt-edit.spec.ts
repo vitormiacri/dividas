@@ -5,7 +5,7 @@ import {
   RenderResult,
   waitFor,
 } from '@testing-library/react';
-import { LoadDebtSpy, SaveDebtSpy } from '@/domain/test';
+import { LoadDebtSpy, mockSaveDebtParams, SaveDebtSpy } from '@/domain/test';
 import { renderWithHistory } from '@/presentation/test/render-helper';
 import users from '@/users.json';
 import DebtEdit from './debt-edit';
@@ -50,20 +50,20 @@ const populateSelect = async (
   fireEvent.click(sut.getByText(usuario));
 };
 
-// const simulateFormSubmit = async (
-//   sut: RenderResult,
-//   params = mockSaveDebtParams()
-// ): Promise<void> => {
-//   const motivoInput = sut.getByTestId('motivo') as HTMLInputElement;
-//   const valorInput = sut.getByTestId('valor') as HTMLInputElement;
-//   const usuario = options[0].label;
-//   await populateSelect(sut, usuario);
-//   fireEvent.input(motivoInput, { target: { value: params.motivo } });
-//   fireEvent.input(valorInput, { target: { value: params.valor } });
-//   const form = sut.getByTestId('form');
-//   fireEvent.submit(form);
-//   await waitFor(() => form);
-// };
+const simulateFormSubmit = async (
+  sut: RenderResult,
+  params = mockSaveDebtParams()
+): Promise<void> => {
+  const motivoInput = sut.getByTestId('motivo') as HTMLInputElement;
+  const valorInput = sut.getByTestId('valor') as HTMLInputElement;
+  const usuario = options[0].label;
+  await populateSelect(sut, usuario);
+  fireEvent.input(motivoInput, { target: { value: params.motivo } });
+  fireEvent.input(valorInput, { target: { value: params.valor } });
+  const form = sut.getByTestId('form');
+  fireEvent.submit(form);
+  await waitFor(() => form);
+};
 
 describe('Debt Edit Component', () => {
   beforeEach(() => cleanup());
@@ -91,11 +91,22 @@ describe('Debt Edit Component', () => {
     expect(valor.value).toBe(String(loadDebtSpy.debt.valor));
   });
 
-  // test('Should go to Debt List Page after click in back link', async () => {
-  //   const { history, sut } = makeSut();
-  //   const backLink = sut.getByTestId('goBackLink');
-  //   fireEvent.click(backLink);
-  //   expect(history.location.pathname).toBe('/');
-  //   await waitFor(() => backLink);
-  // });
+  test('Should call SaveDebt with correct values', async () => {
+    const { saveDebtSpy, sut } = makeSut();
+    const params = mockSaveDebtParams();
+    await simulateFormSubmit(sut, params);
+    expect(saveDebtSpy.params).toEqual({
+      idUsuario: options[0].value,
+      motivo: params.motivo,
+      valor: params.valor,
+    });
+  });
+
+  test('Should go to Debt List Page after click in back link', async () => {
+    const { history, sut } = makeSut();
+    const backLink = sut.getByTestId('goBackLink');
+    fireEvent.click(backLink);
+    expect(history.location.pathname).toBe('/');
+    await waitFor(() => backLink);
+  });
 });
