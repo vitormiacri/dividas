@@ -48,4 +48,15 @@ describe('RemoteDeleteDebt', () => {
     const promise = sut.delete();
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
+
+  test('Should return true if HttpClient returns 200', async () => {
+    const { sut, httpClientSpy } = makeSut();
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.ok,
+      body: true,
+    };
+    const response = await sut.delete();
+
+    expect(response).toBe(true);
+  });
 });
