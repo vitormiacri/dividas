@@ -6,9 +6,10 @@ import Styles from './select-styles.scss';
 
 type Props = {
   options: any[];
+  defaultValue?: any;
 };
 
-const SelectInput: React.FC<Props> = ({ options }) => {
+const SelectInput: React.FC<Props> = ({ options, defaultValue, ...rest }) => {
   const { state, setState } = useContext(Context);
 
   return (
@@ -17,6 +18,7 @@ const SelectInput: React.FC<Props> = ({ options }) => {
         onChange={({ value }) => setState({ ...state, idUsuario: value })}
         options={options}
         placeholder="Selecione um cliente"
+        defaultValue={defaultValue}
         styles={{
           control: (styles) => ({ ...styles, maxHeight: 42 }),
           container: (styles) => ({ ...styles, maxHeight: 42 }),
@@ -30,6 +32,7 @@ const SelectInput: React.FC<Props> = ({ options }) => {
             top: '56%',
           }),
         }}
+        {...rest}
       />
     </div>
   );
