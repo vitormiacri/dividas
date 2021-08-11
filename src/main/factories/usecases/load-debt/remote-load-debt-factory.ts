@@ -1,4 +1,4 @@
-import { RemoteLoadDebt } from '@/data/usecases/load-debt/remote-load-debt.';
+import { RemoteLoadDebt } from '@/data/usecases';
 import { LoadDebt } from '@/domain/usecases';
 import { makeApiUrl, makeAxiosHttpClient } from '../../http';
 

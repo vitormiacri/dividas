@@ -4,16 +4,22 @@ import { Link, useHistory } from 'react-router-dom';
 import Context from '@/presentation/contexts/form/form-context';
 import { Card, Input, Select } from '@/presentation/components';
 import Styles from './debt-edit-styles.scss';
-import { LoadDebt, SaveDebt } from '@/domain/usecases';
+import { LoadDebt, SaveDebt, DeleteDebt } from '@/domain/usecases';
 import { UserModel } from '@/domain/models';
 
 type Props = {
   saveDebt: SaveDebt;
+  deleteDebt: DeleteDebt;
   loadDebt: LoadDebt;
   users: UserModel[];
 };
 
-const DebtEdit: React.FC<Props> = ({ saveDebt, loadDebt, users }) => {
+const DebtEdit: React.FC<Props> = ({
+  saveDebt,
+  deleteDebt,
+  loadDebt,
+  users,
+}) => {
   const history = useHistory();
   const [state, setState] = useState({
     isLoading: false,
@@ -46,6 +52,11 @@ const DebtEdit: React.FC<Props> = ({ saveDebt, loadDebt, users }) => {
     [history, saveDebt, state.idUsuario, state.motivo, state.valor]
   );
 
+  const handleDeleteClick = useCallback(async () => {
+    await deleteDebt.delete();
+    history.replace('/');
+  }, [deleteDebt, history]);
+
   useEffect(() => {
     loadDebt.load().then((debt) => {
       setState((old) => ({
@@ -65,7 +76,11 @@ const DebtEdit: React.FC<Props> = ({ saveDebt, loadDebt, users }) => {
             Voltar
           </Link>
           <h1>Atualizar Dívida</h1>
-          <button type="button" data-testid="deleteDebt">
+          <button
+            type="button"
+            onClick={handleDeleteClick}
+            data-testid="deleteDebt"
+          >
             Remover
           </button>
         </div>

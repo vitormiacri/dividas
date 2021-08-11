@@ -24,7 +24,7 @@ const DebtList: React.FC<Props> = ({ loadDebtList, users }) => {
 
   const handleAddClick = useCallback(() => {
     history.push('/add-debt');
-  }, []);
+  }, [history]);
 
   useEffect(() => {
     loadDebtList.loadAll().then((debts) => {
