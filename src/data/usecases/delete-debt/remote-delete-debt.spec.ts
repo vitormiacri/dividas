@@ -1,6 +1,8 @@
 import faker from 'faker';
 import { HttpClientSpy } from '@/data/test';
 import { RemoteDeleteDebt } from './remote-delete-debt';
+import { HttpStatusCode } from '@/data/protocols/http';
+import { UnexpectedError } from '@/domain/erros/unexpected-error';
 
 type SutTypes = {
   sut: RemoteDeleteDebt;
@@ -25,5 +27,16 @@ describe('RemoteDeleteDebt', () => {
 
     expect(httpClientSpy.url).toBe(url);
     expect(httpClientSpy.method).toBe('delete');
+  });
+
+  test('Should throw UnexpectedError if HttpClient returns 400', async () => {
+    const { sut, httpClientSpy } = makeSut();
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.badRequest,
+    };
+
+    const promise = sut.delete();
+
+    await expect(promise).rejects.toThrow(new UnexpectedError());
   });
 });
