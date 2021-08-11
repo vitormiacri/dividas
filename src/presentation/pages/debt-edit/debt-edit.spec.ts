@@ -102,6 +102,12 @@ describe('Debt Edit Component', () => {
     });
   });
 
+  test('Should go to Debt List Page after save Debt', async () => {
+    const { history, sut } = makeSut();
+    await simulateFormSubmit(sut);
+    expect(history.location.pathname).toBe('/');
+  });
+
   test('Should go to Debt List Page after click in back link', async () => {
     const { history, sut } = makeSut();
     const backLink = sut.getByTestId('goBackLink');
