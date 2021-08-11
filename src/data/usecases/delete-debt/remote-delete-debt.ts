@@ -16,6 +16,8 @@ export class RemoteDeleteDebt implements DeleteDebt {
     switch (httpResponse.statusCode) {
       case HttpStatusCode.badRequest:
         throw new UnexpectedError();
+      case HttpStatusCode.serverError:
+        throw new UnexpectedError();
       default:
         return Promise.resolve(null);
     }
