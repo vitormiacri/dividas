@@ -59,7 +59,7 @@ describe('DebtList Component', () => {
     const debtItem = sut.getAllByTestId('debtItem');
     fireEvent.click(debtItem[0]);
     expect(history.location.pathname).toBe(
-      `/debt/${loadDebtListSpy.debts[0]._id}`
+      `/edit-debt/${loadDebtListSpy.debts[0]._id}`
     );
   });
 

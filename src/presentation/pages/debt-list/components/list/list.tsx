@@ -14,7 +14,7 @@ const List: React.FC<Props> = ({ debtList, users }) => {
 
   const handleEditDebt = useCallback(
     (id: string) => {
-      history.push(`/debt/${id}`);
+      history.push(`/edit-debt/${id}`);
     },
     [history]
   );

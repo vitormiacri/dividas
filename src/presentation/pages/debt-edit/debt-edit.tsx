@@ -3,7 +3,7 @@ import { Link, useHistory } from 'react-router-dom';
 
 import Context from '@/presentation/contexts/form/form-context';
 import { Card, Input, Select } from '@/presentation/components';
-import Styles from './debt-styles.scss';
+import Styles from './debt-edit-styles.scss';
 import { LoadDebt, SaveDebt } from '@/domain/usecases';
 import { UserModel } from '@/domain/models';
 
@@ -64,7 +64,7 @@ const DebtEdit: React.FC<Props> = ({ saveDebt, loadDebt, users }) => {
           <Link data-testid="goBackLink" to="/" className={Styles.link}>
             Voltar
           </Link>
-          <h1>Adicionar Dívida</h1>
+          <h1>Atualizar Dívida</h1>
           <button type="button" data-testid="deleteDebt">
             Remover
           </button>
