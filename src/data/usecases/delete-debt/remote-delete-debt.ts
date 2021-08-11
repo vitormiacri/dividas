@@ -14,12 +14,14 @@ export class RemoteDeleteDebt implements DeleteDebt {
       method: 'delete',
     });
     switch (httpResponse.statusCode) {
+      case HttpStatusCode.ok:
+        return true;
       case HttpStatusCode.badRequest:
         throw new UnexpectedError();
       case HttpStatusCode.serverError:
         throw new UnexpectedError();
       default:
-        return Promise.resolve(null);
+        throw new UnexpectedError();
     }
   }
 }
