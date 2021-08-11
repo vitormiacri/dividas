@@ -1,5 +1,5 @@
 import { createMemoryHistory, MemoryHistory } from 'history';
-import { SaveDebtSpy } from '@/domain/test/mock-save-debt';
+import { mockSaveDebtParams, SaveDebtSpy } from '@/domain/test/mock-save-debt';
 import {
   cleanup,
   fireEvent,
@@ -9,7 +9,6 @@ import {
 import { renderWithHistory } from '@/presentation/test/render-helper';
 import users from '@/users.json';
 import Debt from './debt';
-import { mockRemoteSaveDebtParams } from '@/data/test';
 import { UnexpectedError } from '@/domain/erros/unexpected-error';
 
 type SutTypes = {
@@ -48,7 +47,7 @@ const populateSelect = async (
 
 const simulateFormSubmit = async (
   sut: RenderResult,
-  params = mockRemoteSaveDebtParams()
+  params = mockSaveDebtParams()
 ): Promise<void> => {
   const motivoInput = sut.getByTestId('motivo') as HTMLInputElement;
   const valorInput = sut.getByTestId('valor') as HTMLInputElement;
@@ -74,7 +73,7 @@ describe('Debt Component', () => {
 
   test('Should call SaveDebt with correct values', async () => {
     const { saveDebtSpy, sut } = makeSut();
-    const params = mockRemoteSaveDebtParams();
+    const params = mockSaveDebtParams();
     await simulateFormSubmit(sut, params);
     expect(saveDebtSpy.params).toEqual({
       idUsuario: options[0].value,

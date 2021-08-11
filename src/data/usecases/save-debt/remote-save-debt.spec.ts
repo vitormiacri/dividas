@@ -1,13 +1,10 @@
 import faker from 'faker';
 
-import {
-  HttpClientSpy,
-  mockRemoteSaveDebtModel,
-  mockRemoteSaveDebtParams,
-} from '@/data/test';
+import { HttpClientSpy, mockRemoteSaveDebtModel } from '@/data/test';
 import { RemoteSaveDebt } from './remote-save-debt';
 import { HttpStatusCode } from '@/data/protocols/http';
 import { UnexpectedError } from '@/domain/erros/unexpected-error';
+import { mockSaveDebtParams } from '@/domain/test/mock-save-debt';
 
 type SutTypes = {
   sut: RemoteSaveDebt;
@@ -31,7 +28,7 @@ describe('RemoteSaveDebt', () => {
       statusCode: HttpStatusCode.ok,
       body: mockRemoteSaveDebtModel(),
     };
-    const saveDebtParams = mockRemoteSaveDebtParams();
+    const saveDebtParams = mockSaveDebtParams();
     const method = 'put';
     await sut.save(saveDebtParams, method);
     expect(httpClientSpy.url).toBe(url);
@@ -48,7 +45,7 @@ describe('RemoteSaveDebt', () => {
       body: response,
     };
 
-    const httpResponse = await sut.save(mockRemoteSaveDebtParams(), 'post');
+    const httpResponse = await sut.save(mockSaveDebtParams(), 'post');
     expect(httpResponse).toBe(response.success);
   });
 
@@ -57,7 +54,7 @@ describe('RemoteSaveDebt', () => {
     httpClientSpy.response = {
       statusCode: HttpStatusCode.badRequest,
     };
-    const promise = sut.save(mockRemoteSaveDebtParams(), 'post');
+    const promise = sut.save(mockSaveDebtParams(), 'post');
 
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
@@ -68,7 +65,7 @@ describe('RemoteSaveDebt', () => {
       statusCode: HttpStatusCode.serverError,
     };
 
-    const promise = sut.save(mockRemoteSaveDebtParams(), 'post');
+    const promise = sut.save(mockSaveDebtParams(), 'post');
 
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
