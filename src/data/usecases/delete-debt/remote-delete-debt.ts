@@ -20,8 +20,6 @@ export class RemoteDeleteDebt implements DeleteDebt {
         throw new UnexpectedError();
       case HttpStatusCode.serverError:
         throw new UnexpectedError();
-      default:
-        throw new UnexpectedError();
     }
   }
 }
