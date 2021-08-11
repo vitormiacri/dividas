@@ -2,7 +2,7 @@ import faker from 'faker';
 import { HttpClientSpy, mockRemoteDebtModel } from '@/data/test';
 import { RemoteDebtModel } from '@/data/models';
 import { HttpStatusCode } from '@/data/protocols/http';
-import { RemoteLoadDebt } from './remote-load-debt.';
+import { RemoteLoadDebt } from './remote-load-debt';
 import { UnexpectedError } from '@/domain/erros/unexpected-error';
 
 type SutTypes = {
