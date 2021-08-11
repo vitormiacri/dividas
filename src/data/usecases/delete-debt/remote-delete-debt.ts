@@ -1,4 +1,5 @@
-import { HttpClient } from '@/data/protocols/http';
+import { HttpClient, HttpStatusCode } from '@/data/protocols/http';
+import { UnexpectedError } from '@/domain/erros/unexpected-error';
 import { DeleteDebt } from '@/domain/usecases/delete-debt';
 
 export class RemoteDeleteDebt implements DeleteDebt {
@@ -8,10 +9,15 @@ export class RemoteDeleteDebt implements DeleteDebt {
   ) {}
 
   async delete(): Promise<boolean> {
-    await this.httpClient.request({
+    const httpResponse = await this.httpClient.request({
       url: this.url,
       method: 'delete',
     });
-    return Promise.resolve(null);
+    switch (httpResponse.statusCode) {
+      case HttpStatusCode.badRequest:
+        throw new UnexpectedError();
+      default:
+        return Promise.resolve(null);
+    }
   }
 }
