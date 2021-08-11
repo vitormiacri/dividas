@@ -3,7 +3,7 @@ import { useParams } from 'react-router-dom';
 
 import DebtEdit from '@/presentation/pages/debt-edit/debt-edit';
 import users from '@/users.json';
-import { makeRemoteSaveDebt, makeRemoteLoadDebt } from '../../usecases';
+import { makeRemoteLoadDebt, makeRemoteSaveEditDebt } from '../../usecases';
 
 type ParamsProps = {
   id: string;
@@ -14,7 +14,7 @@ export const makeEditDebt: React.FC = () => {
   const { id } = useParams<ParamsProps>();
   return (
     <DebtEdit
-      saveDebt={makeRemoteSaveDebt()}
+      saveDebt={makeRemoteSaveEditDebt(id)}
       loadDebt={makeRemoteLoadDebt(id)}
       users={users}
     />

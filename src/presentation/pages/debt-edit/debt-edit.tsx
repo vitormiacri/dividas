@@ -90,7 +90,7 @@ const DebtEdit: React.FC<Props> = ({ saveDebt, loadDebt, users }) => {
               value={state.motivo}
             />
             <Input
-              type="text"
+              type="number"
               name="valor"
               required
               placeholder="Informe o valor"

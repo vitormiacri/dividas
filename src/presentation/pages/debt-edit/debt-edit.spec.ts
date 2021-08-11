@@ -9,6 +9,7 @@ import { LoadDebtSpy, mockSaveDebtParams, SaveDebtSpy } from '@/domain/test';
 import { renderWithHistory } from '@/presentation/test/render-helper';
 import users from '@/users.json';
 import DebtEdit from './debt-edit';
+import { UnexpectedError } from '@/domain/erros/unexpected-error';
 
 type SutTypes = {
   sut: RenderResult;
@@ -77,16 +78,10 @@ describe('Debt Edit Component', () => {
   test('Should fill all fields after calls LoadDebt', async () => {
     const saveDebtSpy = new SaveDebtSpy();
     const loadDebtSpy = new LoadDebtSpy();
-    const id = 4;
-    loadDebtSpy.debt.idUsuario = id;
     const { sut } = makeSut(saveDebtSpy, loadDebtSpy);
     const motivo = sut.getByTestId('motivo') as HTMLInputElement;
     const valor = sut.getByTestId('valor') as HTMLInputElement;
     await waitFor(() => valor);
-    const usuario = options[id].label;
-    await populateSelect(sut, usuario);
-    const selectedUser = sut.getByText(usuario);
-    expect(selectedUser.textContent).toBe(usuario);
     expect(motivo.value).toBe(loadDebtSpy.debt.motivo);
     expect(valor.value).toBe(String(loadDebtSpy.debt.valor));
   });
@@ -114,5 +109,17 @@ describe('Debt Edit Component', () => {
     fireEvent.click(backLink);
     expect(history.location.pathname).toBe('/');
     await waitFor(() => backLink);
+  });
+
+  test('Should show alert if submit fails', async () => {
+    const saveDebtSpy = new SaveDebtSpy();
+    const error = new UnexpectedError();
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
+    jest.spyOn(saveDebtSpy, 'save').mockRejectedValueOnce(error);
+    const { sut } = makeSut(saveDebtSpy);
+    const form = sut.getByTestId('form');
+    fireEvent.submit(form);
+    await waitFor(() => form);
+    expect(window.alert).toBeCalledTimes(1);
   });
 });

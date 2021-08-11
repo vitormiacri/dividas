@@ -69,7 +69,7 @@ const Debt: React.FC<Props> = ({ saveDebt, users }) => {
               placeholder="Informe o motivo"
             />
             <Input
-              type="text"
+              type="number"
               name="valor"
               required
               placeholder="Informe o valor"

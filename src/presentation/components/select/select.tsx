@@ -18,7 +18,7 @@ const SelectInput: React.FC<Props> = ({ options, defaultValue, ...rest }) => {
         onChange={({ value }) => setState({ ...state, idUsuario: value })}
         options={options}
         placeholder="Selecione um cliente"
-        defaultValue={defaultValue}
+        value={defaultValue}
         styles={{
           control: (styles) => ({ ...styles, maxHeight: 42 }),
           container: (styles) => ({ ...styles, maxHeight: 42 }),
