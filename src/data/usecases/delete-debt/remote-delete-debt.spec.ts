@@ -39,4 +39,13 @@ describe('RemoteDeleteDebt', () => {
 
     await expect(promise).rejects.toThrow(new UnexpectedError());
   });
+
+  test('Should throw UnexpectedErro if HttpClient returns 500', async () => {
+    const { httpClientSpy, sut } = makeSut();
+    httpClientSpy.response = {
+      statusCode: HttpStatusCode.serverError,
+    };
+    const promise = sut.delete();
+    await expect(promise).rejects.toThrow(new UnexpectedError());
+  });
 });
